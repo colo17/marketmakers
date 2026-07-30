@@ -14,10 +14,13 @@ const OUT = "C:/Users/Juan/market-makers/src/data/ebooks";
 
 const BOOKS = [
   { file: "Market_Makers_Guia_Principiantes.html", slug: "trading-de-oro-para-principiantes" },
+  { file: "Market_Makers_Mastering_Gold.html", slug: "como-operar-el-oro" },
   { file: "Market_Makers_Guia_Estrategias.html", slug: "estrategias-trading-xauusd" },
   { file: "Market_Makers_Chart_Patterns.html", slug: "patrones-chartistas" },
+  { file: "Market_Makers_Trading_The_News.html", slug: "trading-con-noticias" },
   { file: "Market_Makers_Risk_Management.html", slug: "gestion-del-riesgo" },
   { file: "Market_Makers_The_Traders_Mind.html", slug: "psicologia-del-trading" },
+  { file: "Market_Makers_Cuentas_De_Fondeo.html", slug: "cuentas-de-fondeo" },
 ];
 
 /**

@@ -1,8 +1,11 @@
 import principiantes from "./ebooks/trading-de-oro-para-principiantes.json";
+import oro from "./ebooks/como-operar-el-oro.json";
 import estrategias from "./ebooks/estrategias-trading-xauusd.json";
 import patrones from "./ebooks/patrones-chartistas.json";
+import noticias from "./ebooks/trading-con-noticias.json";
 import riesgo from "./ebooks/gestion-del-riesgo.json";
 import psicologia from "./ebooks/psicologia-del-trading.json";
+import fondeo from "./ebooks/cuentas-de-fondeo.json";
 
 /**
  * Contenido de las guías: el HTML original de los ebooks, con sus gráficos
@@ -24,10 +27,13 @@ export type Ebook = {
 
 const EBOOKS: Record<string, Ebook> = {
   "trading-de-oro-para-principiantes": principiantes as Ebook,
+  "como-operar-el-oro": oro as Ebook,
   "estrategias-trading-xauusd": estrategias as Ebook,
   "patrones-chartistas": patrones as Ebook,
+  "trading-con-noticias": noticias as Ebook,
   "gestion-del-riesgo": riesgo as Ebook,
   "psicologia-del-trading": psicologia as Ebook,
+  "cuentas-de-fondeo": fondeo as Ebook,
 };
 
 /** Metadata editorial de cada guía (SEO, orden, presentación). */
@@ -44,6 +50,19 @@ export const GUIDES_META = [
     seoDescription:
       "Aprendé trading de oro (XAU/USD) desde cero: pips, lotes, spread, apalancamiento, stop loss y gestión de riesgo. Guía gratuita en español, explicada paso a paso.",
     keywords: ["trading de oro para principiantes", "cómo empezar en el trading", "qué es XAU/USD"],
+  },
+  {
+    slug: "como-operar-el-oro",
+    title: "Cómo operar el oro (XAU/USD)",
+    shortTitle: "Mastering Gold",
+    level: "Nivel inicial",
+    cover: "/media/ebook-mastering-gold.jpg",
+    excerpt:
+      "Todo sobre el activo: qué es realmente XAU/USD, cómo cotiza en pips y lotes, por qué sube y baja, qué lo mueve y en qué horarios conviene operarlo.",
+    seoTitle: "Cómo Operar el Oro XAU/USD — Guía Completa del Activo",
+    seoDescription:
+      "Guía completa del oro en trading: qué es XAU/USD, cómo cotiza, qué mueve su precio, horarios de mayor volatilidad y cómo operarlo. Gratis y en español.",
+    keywords: ["cómo operar el oro", "qué es XAU/USD", "trading de oro en español"],
   },
   {
     slug: "estrategias-trading-xauusd",
@@ -72,6 +91,19 @@ export const GUIDES_META = [
     keywords: ["patrones chartistas", "figuras chartistas", "patrones de trading"],
   },
   {
+    slug: "trading-con-noticias",
+    title: "Trading con noticias",
+    shortTitle: "Trading The News",
+    level: "Nivel avanzado",
+    cover: "/media/ebook-noticias.jpg",
+    excerpt:
+      "Cómo leer el calendario económico y operar la volatilidad: NFP, IPC, decisiones de tipos y bancos centrales, y por qué el oro reacciona como reacciona.",
+    seoTitle: "Trading con Noticias — Operar el Calendario Económico en XAU/USD",
+    seoDescription:
+      "Aprendé a operar noticias en XAU/USD: calendario económico, NFP, IPC, tipos de interés y bancos centrales. Cómo gestionar la volatilidad. Guía gratis en español.",
+    keywords: ["trading con noticias", "calendario económico trading", "operar NFP oro"],
+  },
+  {
     slug: "gestion-del-riesgo",
     title: "Gestión del riesgo",
     shortTitle: "Risk Management",
@@ -96,6 +128,19 @@ export const GUIDES_META = [
     seoDescription:
       "Psicología del trading en español: FOMO, revenge trading, overtrading y gestión emocional. Rutinas y checklists para operar con disciplina. Guía gratuita.",
     keywords: ["psicología del trading", "FOMO trading", "disciplina en el trading"],
+  },
+  {
+    slug: "cuentas-de-fondeo",
+    title: "Cuentas de fondeo",
+    shortTitle: "Cuentas de Fondeo",
+    level: "Nivel avanzado",
+    cover: "/media/ebook-fondeo.jpg",
+    excerpt:
+      "De la demo al capital real: qué es una prop firm, cómo funcionan los challenges, las reglas que te descalifican y cómo preparar la evaluación sin quemarla.",
+    seoTitle: "Cuentas de Fondeo y Prop Firms — Guía Completa en Español",
+    seoDescription:
+      "Cómo funcionan las cuentas de fondeo: prop firms, challenges, drawdown máximo, reglas de descalificación y cómo pasar la evaluación. Guía gratis en español.",
+    keywords: ["cuentas de fondeo", "prop firm", "challenge de fondeo"],
   },
 ] as const;
 

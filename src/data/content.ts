@@ -104,7 +104,7 @@ export const SCROLLY = {
 export const EDUCACION = {
   title: "Educación que construye traders",
   subtitle:
-    "La colección Market Makers: cuatro ebooks para pasar de cero a operar el oro con criterio. Acceso gratuito desde nuestro Discord.",
+    "La colección Market Makers: ocho guías completas para pasar de cero a operar el oro con criterio. Leelas gratis acá o descargá los PDF en el Discord.",
   ebooks: [
     {
       slug: "trading-de-oro-para-principiantes",
@@ -115,12 +115,36 @@ export const EDUCACION = {
       cover: "/media/ebook-principiantes.jpg",
     },
     {
+      slug: "como-operar-el-oro",
+      title: "Mastering Gold",
+      pages: "42 páginas",
+      description:
+        "Todo sobre el activo: qué es XAU/USD, cómo cotiza, qué mueve su precio y en qué horarios conviene operarlo.",
+      cover: "/media/ebook-mastering-gold.jpg",
+    },
+    {
       slug: "estrategias-trading-xauusd",
       title: "Guía Completa de Estrategias",
       pages: "47 páginas",
       description:
         "Setups, confluencias y ejecución aplicados a XAU/USD. El manual de operativa que usamos todos los días en los análisis.",
       cover: "/media/ebook-estrategias.jpg",
+    },
+    {
+      slug: "trading-con-noticias",
+      title: "Trading The News",
+      pages: "61 páginas",
+      description:
+        "Calendario económico, NFP, IPC y bancos centrales. Cómo operar la volatilidad de las noticias sin que te pase por encima.",
+      cover: "/media/ebook-noticias.jpg",
+    },
+    {
+      slug: "cuentas-de-fondeo",
+      title: "Cuentas de Fondeo",
+      pages: "45 páginas",
+      description:
+        "De la demo al capital real: cómo funcionan las prop firms, los challenges y las reglas que te descalifican.",
+      cover: "/media/ebook-fondeo.jpg",
     },
     {
       slug: "gestion-del-riesgo",

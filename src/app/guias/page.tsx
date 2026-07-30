@@ -55,9 +55,9 @@ export default function GuiasPage() {
               Guías de trading de oro
             </h1>
             <p className="max-w-2xl text-foreground/70 leading-relaxed">
-              Toda nuestra colección educativa, completa y gratuita, para leer online. Aprendé a
-              operar XAU/USD desde cero: conceptos básicos, estrategias, patrones chartistas,
-              gestión del riesgo y la psicología que sostiene todo lo demás.
+              Ocho guías completas y gratuitas, para leer online. Todo el camino: desde qué es el
+              oro y cómo cotiza, hasta estrategias, patrones chartistas, noticias, gestión del
+              riesgo, psicología y cómo llegar a operar una cuenta de fondeo.
             </p>
             <CtaButton size="lg">Descargá los PDF en Discord</CtaButton>
           </Reveal>

@@ -49,16 +49,29 @@ Todos los assets viven en `public/media/`:
 
 ## 📚 Las guías (versión HTML de los ebooks)
 
-Los 5 ebooks están publicados **completos como páginas web**, con su diseño y sus gráficos originales. Es el activo SEO principal del sitio (~29.400 palabras indexables):
+Los 8 ebooks están publicados **completos como páginas web**, con su diseño y sus gráficos originales. Es el activo SEO principal del sitio (~51.600 palabras indexables). El orden sigue un recorrido de aprendizaje, de lo básico al capital real:
 
 | URL | Guía | Palabras |
 | --- | --- | --- |
 | `/guias` | Hub de la biblioteca | — |
 | `/guias/trading-de-oro-para-principiantes` | Guía para Principiantes | 2.517 |
+| `/guias/como-operar-el-oro` | Mastering Gold | 6.506 |
 | `/guias/estrategias-trading-xauusd` | Guía de Estrategias | 7.137 |
 | `/guias/patrones-chartistas` | Chart Patterns | 6.617 |
+| `/guias/trading-con-noticias` | Trading The News | 9.245 |
 | `/guias/gestion-del-riesgo` | Risk Management | 6.841 |
 | `/guias/psicologia-del-trading` | The Trader's Mind | 6.291 |
+| `/guias/cuentas-de-fondeo` | Cuentas de Fondeo | 6.472 |
+
+### Agregar una guía nueva
+
+1. Poné el HTML del ebook en `C:/Users/Juan/Downloads/`.
+2. Agregá una línea a `BOOKS` en [`scripts/extract-html.mjs`](scripts/extract-html.mjs) con su slug.
+3. Corré `node scripts/extract-html.mjs`.
+4. Agregá el `import` y la entrada en `EBOOKS` y `GUIDES_META` de [`src/data/guides.ts`](src/data/guides.ts).
+5. Opcional: sumala a `EDUCACION.ebooks` en `content.ts` para que aparezca en la home.
+
+El sitemap, el índice, los CTA y los datos estructurados se generan solos.
 
 **El PDF no se sirve desde la web**: cada guía tiene un CTA al Discord arriba y otro al final, más un bloque de streams de Kick a mitad de lectura.
 

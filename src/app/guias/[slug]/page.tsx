@@ -50,7 +50,8 @@ export default async function GuidePage({ params }: Props) {
   if (!meta || !ebook) notFound();
 
   const minutes = readingMinutes(ebook.words);
-  const others = GUIDES_META.filter((g) => g.slug !== slug);
+  // 4 sugerencias: una fila limpia, sin abrumar al final de la lectura.
+  const others = GUIDES_META.filter((g) => g.slug !== slug).slice(0, 4);
   const toc = ebook.pages.filter((p) => p.title && p.id);
 
   // El CTA del stream va a mitad de la guía, donde el lector ya está enganchado.
