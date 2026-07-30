@@ -1,36 +1,123 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Market Makers — Sitio Web Oficial
 
-## Getting Started
+Sitio web de **Market Makers** (señales de trading de oro XAU/USD + educación), construido con Next.js 16, Tailwind CSS v4, Framer Motion, GSAP y Lenis.
 
-First, run the development server:
+**Estética:** negro mate `#0D0D0D` + oro `#D4AF37` · Montserrat / Inter / Cormorant Garamond (self-hosted vía `next/font`, sin CDN de Google).
+
+---
+
+## 🚀 Cómo correrlo
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev       # desarrollo → http://localhost:3000
+npm run build     # build de producción
+npm start         # servir el build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ✏️ Dónde editar textos, precios y enlaces
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**TODO el contenido está en un solo archivo:** [`src/data/content.ts`](src/data/content.ts)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Qué | Dónde |
+| --- | --- |
+| Precio del VIP | `PRECIO_VIP` (arriba de todo) |
+| Enlaces Discord / Kick / Instagram | `LINKS` |
+| Dominio del sitio (para SEO) | `BRAND.url` ⚠️ cambialo al desplegar |
+| Textos del hero, badge de lanzamiento | `HERO` |
+| Pasos del funnel | `COMO_FUNCIONA` |
+| Ebooks (títulos, descripciones, portadas) | `EDUCACION` |
+| Planes y features | `VIP` |
+| Horarios de streams | `STREAMS` |
+| Testimonios (placeholders → reemplazar por reales) | `TESTIMONIOS` |
+| Preguntas frecuentes | `FAQ` |
+| Aviso de riesgo | `DISCLAIMER` |
 
-## Learn More
+## 🖼️ Reemplazar assets por los reales
 
-To learn more about Next.js, take a look at the following resources:
+Todos los assets viven en `public/media/`:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+| Archivo | Uso | Cómo reemplazarlo |
+| --- | --- | --- |
+| `hero-video.mp4` + `hero-poster.jpg` | Video de fondo del hero | Mismo nombre, MP4 H.264 16:9, ideal < 3 MB |
+| `scrolly-video.mp4` + `scrolly-poster.jpg` | Video del scrollytelling | Mismo nombre. Debe poder "scrubearse" (keyframes frecuentes: `ffmpeg -g 15`) |
+| `ebook-*.jpg` | Portadas de los 4 ebooks | Generadas con IA (sin texto — el título lo pone la card). Para usar las portadas reales de los PDF, exportá la pág. 1 como JPG 800px de ancho con el mismo nombre |
+| `bot-ia.jpg` | Imagen sección Bot IA | Mismo nombre, 4:3 |
+| `og-image.jpg` | Imagen para redes (Open Graph) | 1200×630 exactos |
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+> Los videos e imágenes fueron generados con Higgsfield (Seedance 2.0 Mini + Nano Banana, la opción más económica) y optimizados con ffmpeg.
 
-## Deploy on Vercel
+## 📚 Las guías (versión HTML de los ebooks)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Los 5 ebooks están publicados **completos como páginas web**, con su diseño y sus gráficos originales. Es el activo SEO principal del sitio (~29.400 palabras indexables):
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| URL | Guía | Palabras |
+| --- | --- | --- |
+| `/guias` | Hub de la biblioteca | — |
+| `/guias/trading-de-oro-para-principiantes` | Guía para Principiantes | 2.517 |
+| `/guias/estrategias-trading-xauusd` | Guía de Estrategias | 7.137 |
+| `/guias/patrones-chartistas` | Chart Patterns | 6.617 |
+| `/guias/gestion-del-riesgo` | Risk Management | 6.841 |
+| `/guias/psicologia-del-trading` | The Trader's Mind | 6.291 |
+
+**El PDF no se sirve desde la web**: cada guía tiene un CTA al Discord arriba y otro al final, más un bloque de streams de Kick a mitad de lectura.
+
+### De dónde sale el contenido
+
+Se extrae de los **HTML originales de los ebooks** (los que exporta el proyecto de diseño), no de los PDF. Eso conserva el diseño exacto y, sobre todo, los **gráficos como SVG vectorial**: escalan sin perder nitidez, pesan poco y se adaptan al ancho de pantalla.
+
+De cada página del ebook se toma solo el `.pbody` (se descartan el header y el footer de marca, que se repetían en las 162 páginas), y el CSS se scopea bajo `.ebook` para que no se filtre al resto del sitio.
+
+### Editar una guía
+
+- **Textos, títulos y SEO** de cada guía: [`src/data/guides.ts`](src/data/guides.ts) → `GUIDES_META`.
+- **Contenido del ebook**: `src/data/ebooks/<slug>.json` (generado; ver abajo).
+- **Copy del CTA de streams**: [`src/data/content.ts`](src/data/content.ts) → `GUIA_STREAM_CTA`.
+
+### Regenerar desde los HTML
+
+Si actualizás un ebook, volvé a exportar su HTML a `C:/Users/Juan/Downloads/` y corré:
+
+```bash
+node scripts/extract-html.mjs
+```
+
+El script está en [`scripts/extract-html.mjs`](scripts/extract-html.mjs) — ahí se configuran las rutas de origen y los slugs. No necesita dependencias.
+
+## 🌐 Desplegar en Vercel
+
+1. Subí el repo a GitHub.
+2. En [vercel.com](https://vercel.com) → **Add New Project** → importá el repo. Vercel detecta Next.js solo; no hay que configurar nada.
+3. **Importante:** actualizá `BRAND.url` en `src/data/content.ts` con tu dominio final (afecta sitemap, robots, Open Graph y JSON-LD).
+4. Cada `git push` redeploya automáticamente.
+
+## 🧱 Estructura
+
+```
+src/
+├── app/
+│   ├── layout.tsx        # Fuentes self-hosted + metadata SEO global
+│   ├── page.tsx          # Ensambla las 12 secciones
+│   ├── globals.css       # Tema de marca (tokens Tailwind v4 + utilidades doradas)
+│   ├── sitemap.ts        # sitemap.xml automático
+│   └── robots.ts         # robots.txt automático
+├── components/
+│   ├── sections/         # Hero, Pilares, CómoFunciona, Scrollytelling, Educación,
+│   │                     # VIP, BotIA, Streams, Testimonios, FAQ, Disclaimer
+│   ├── Navbar / Footer / LogoM / GoldParticles / SmoothScroll / JsonLd
+│   └── ui/               # CtaButton, Reveal, SectionHeading
+└── data/
+    └── content.ts        # ⭐ TODO el contenido editable
+```
+
+## 🌍 Futuro: versión en inglés (i18n)
+
+El contenido está 100% separado de los componentes (`src/data/content.ts`), así que para i18n solo hay que:
+1. Crear `src/data/content.en.ts` con las mismas claves.
+2. Agregar rutas `/en` (o middleware de detección de idioma) que importen ese archivo.
+
+## ⚠️ Notas
+
+- **Todos los CTA** apuntan al Discord: `https://discord.gg/NExjMnrvQE` (definido una sola vez en `LINKS.discord`).
+- El scrollytelling se degrada automáticamente en mobile y con `prefers-reduced-motion` (muestra frases con reveal simple en vez de video scrubbing).
+- Sin promesas de rentabilidad en el copy: lenguaje realista + disclaimer de riesgo completo y versión corta en el footer.

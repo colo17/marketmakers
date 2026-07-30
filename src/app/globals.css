@@ -1,26 +1,138 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0d0d0d;
+  --foreground: #e8e8e8;
+  --gold: #d4af37;
+  --gold-light: #f0d878;
+  --gold-dark: #9c7c1e;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+  --color-gold-dark: var(--gold-dark);
+  --color-ink: #0d0d0d;
+  --color-ink-soft: #161616;
+  --color-ink-card: #1a1a1a;
+  --color-line: rgba(212, 175, 55, 0.2);
+  --font-display: var(--font-montserrat);
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-cormorant);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html.lenis {
+    scroll-behavior: auto;
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--gold);
+  color: #0d0d0d;
+}
+
+/* ---- Utilidades de marca ---- */
+
+/* Texto con degradado dorado metálico */
+.text-gold-gradient {
+  background: linear-gradient(
+    100deg,
+    #9c7c1e 0%,
+    #d4af37 25%,
+    #f6e27a 50%,
+    #d4af37 75%,
+    #9c7c1e 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Texto plateado metálico (mitad plata del logo) */
+.text-silver-gradient {
+  background: linear-gradient(100deg, #8a8a8a 0%, #e8e8e8 30%, #ffffff 50%, #d0d0d0 70%, #8a8a8a 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Botón dorado metálico */
+.btn-gold {
+  background: linear-gradient(120deg, #9c7c1e 0%, #d4af37 35%, #f6e27a 50%, #d4af37 65%, #9c7c1e 100%);
+  background-size: 200% auto;
+  color: #0d0d0d;
+  transition: background-position 0.5s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.btn-gold:hover {
+  background-position: right center;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(212, 175, 55, 0.35);
+}
+
+/* Botón contorno dorado */
+.btn-outline-gold {
+  border: 1px solid rgba(212, 175, 55, 0.5);
+  color: #d4af37;
+  transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.btn-outline-gold:hover {
+  border-color: #d4af37;
+  background: rgba(212, 175, 55, 0.08);
+  box-shadow: 0 0 24px rgba(212, 175, 55, 0.15);
+}
+
+/* Card oscura con borde dorado sutil */
+.card-gold {
+  background: linear-gradient(160deg, #1a1a1a 0%, #121212 100%);
+  border: 1px solid rgba(212, 175, 55, 0.18);
+  transition: border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-gold:hover {
+  border-color: rgba(212, 175, 55, 0.55);
+  box-shadow: 0 12px 40px rgba(212, 175, 55, 0.12);
+}
+
+/* Línea divisoria dorada */
+.divider-gold {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.6), transparent);
+}
+
+/* Fondo con mapa punteado / grilla sutil */
+.bg-dotted-map {
+  background-image: radial-gradient(rgba(212, 175, 55, 0.12) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+
+/* Glow dorado detrás de elementos destacados */
+.glow-gold {
+  box-shadow: 0 0 60px rgba(212, 175, 55, 0.18);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

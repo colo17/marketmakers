@@ -24,6 +24,24 @@
 .DS_Store
 *.pem
 
+# windows
+Thumbs.db
+Desktop.ini
+
+# editores
+.vscode/
+.idea/
+*.swp
+
+# config local de herramientas de IA (no hace falta en el repo)
+.claude/
+
+# archivos temporales de media (los assets finales de /public/media SÍ se suben:
+# Vercel los despliega desde el repo)
+*-raw.mp4
+*-raw.png
+raw-*.png
+
 # debug
 npm-debug.log*
 yarn-debug.log*
