@@ -23,7 +23,7 @@ npm start         # servir el build
 | --- | --- |
 | Precio del VIP | `PRECIO_VIP` (arriba de todo) |
 | Enlaces Discord / Kick / Instagram | `LINKS` |
-| Dominio del sitio (para SEO) | `BRAND.url` ⚠️ cambialo al desplegar |
+| Dominio del sitio (para SEO) | `BRAND.url` — ver abajo |
 | Textos del hero, badge de lanzamiento | `HERO` |
 | Pasos del funnel | `COMO_FUNCIONA` |
 | Ebooks (títulos, descripciones, portadas) | `EDUCACION` |
@@ -84,12 +84,22 @@ node scripts/extract-html.mjs
 
 El script está en [`scripts/extract-html.mjs`](scripts/extract-html.mjs) — ahí se configuran las rutas de origen y los slugs. No necesita dependencias.
 
-## 🌐 Desplegar en Vercel
+## 🌐 Despliegue y dominio
 
-1. Subí el repo a GitHub.
-2. En [vercel.com](https://vercel.com) → **Add New Project** → importá el repo. Vercel detecta Next.js solo; no hay que configurar nada.
-3. **Importante:** actualizá `BRAND.url` en `src/data/content.ts` con tu dominio final (afecta sitemap, robots, Open Graph y JSON-LD).
-4. Cada `git push` redeploya automáticamente.
+El sitio está en Vercel: cada `git push` redeploya automáticamente.
+
+### ⚠️ Cuando conectes un dominio propio
+
+`BRAND.url` en [`src/data/content.ts`](src/data/content.ts) es **el único lugar** donde se define la URL pública. De ahí salen:
+
+- el `canonical` de cada página,
+- el `sitemap.xml`,
+- las previews al compartir (Open Graph / Twitter Cards),
+- los datos estructurados JSON-LD.
+
+Hoy apunta a `https://marketmakers-nine.vercel.app`. Al conectar tu dominio, cambiá esa línea y hacé push. Si no lo hacés, el canonical seguiría apuntando al dominio viejo y Google podría no indexar el nuevo.
+
+Después del cambio, conviene dar de alta el sitio en [Google Search Console](https://search.google.com/search-console) y enviar el sitemap (`tudominio.com/sitemap.xml`) para acelerar la indexación de las guías.
 
 ## 🧱 Estructura
 
