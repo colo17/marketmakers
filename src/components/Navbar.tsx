@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { NAV, LINKS, BRAND } from "@/data/content";
 import LogoM from "./LogoM";
 import CtaButton from "./ui/CtaButton";
@@ -28,7 +29,7 @@ export default function Navbar() {
         className="mx-auto max-w-7xl px-5 flex items-center justify-between gap-4"
         aria-label="Navegación principal"
       >
-        <a href="#inicio" className="flex items-center gap-3" aria-label="Ir al inicio">
+        <Link href="/" className="flex items-center gap-3" aria-label="Ir al inicio">
           <LogoM className="h-9 w-9" />
           <span className="hidden sm:flex flex-col leading-none">
             <span className="font-display font-extrabold uppercase tracking-wider text-sm">
@@ -39,17 +40,17 @@ export default function Navbar() {
               {BRAND.tagline}
             </span>
           </span>
-        </a>
+        </Link>
 
         <ul className="hidden lg:flex items-center gap-7">
           {NAV.map((item) => (
             <li key={item.href}>
-              <a
+              <Link
                 href={item.href}
                 className="text-sm text-foreground/70 hover:text-gold transition-colors"
               >
                 {item.label}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
@@ -80,13 +81,13 @@ export default function Navbar() {
           <ul className="px-5 py-4 flex flex-col gap-3">
             {NAV.map((item) => (
               <li key={item.href}>
-                <a
+                <Link
                   href={item.href}
                   onClick={() => setOpen(false)}
                   className="block py-2 text-foreground/80 hover:text-gold transition-colors"
                 >
                   {item.label}
-                </a>
+                </Link>
               </li>
             ))}
             <li className="pt-2">

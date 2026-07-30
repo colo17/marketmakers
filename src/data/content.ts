@@ -23,7 +23,10 @@ export const BRAND = {
   tagline: "XAU/USD SIGNALS",
   slogan1: "Precisión. Disciplina. Consistencia.",
   slogan2: "Disciplina hoy, libertad mañana.",
-  url: "https://marketmakers.trading", // cambiá por tu dominio real al desplegar
+  // ⚠️ URL pública del sitio. De acá salen el canonical, el sitemap y las
+  // previews al compartir (Open Graph). Cuando conectes un dominio propio,
+  // cambiá ESTA línea y volvé a desplegar: es el único lugar donde se define.
+  url: "https://marketmakers-nine.vercel.app",
 } as const;
 
 // ---- HERO ----
