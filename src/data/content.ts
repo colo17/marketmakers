@@ -26,7 +26,7 @@ export const BRAND = {
   // ⚠️ URL pública del sitio. De acá salen el canonical, el sitemap y las
   // previews al compartir (Open Graph). Cuando conectes un dominio propio,
   // cambiá ESTA línea y volvé a desplegar: es el único lugar donde se define.
-  url: "https://marketmakers-nine.vercel.app",
+  url: "https://marketmakers.club",
 } as const;
 
 // ---- HERO ----

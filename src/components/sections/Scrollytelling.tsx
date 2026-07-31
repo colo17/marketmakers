@@ -1,197 +1,122 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { motion, useScroll, useMotionValueEvent, useReducedMotion } from "framer-motion";
 import { SCROLLY, BRAND } from "@/data/content";
 
 /**
- * Sección estrella: el video narrativo se pinea y avanza con el scroll (scrubbing),
- * con frases que aparecen sincronizadas.
- * Fallback: en mobile o con prefers-reduced-motion se muestran las frases
- * con reveals simples sobre el poster estático (sin pin ni scrubbing).
+ * Sección narrativa: el video queda fijo mientras las frases pasan por encima.
+ *
+ * El fondo se fija con `position: sticky` (CSS nativo) en vez del `pin` de
+ * ScrollTrigger: así no se rompe cuando el navegador de mobile esconde o
+ * muestra la barra de direcciones y cambia la altura del viewport.
+ *
+ * - Desktop: el video avanza cuadro a cuadro con el scroll (scrubbing).
+ * - Mobile: el scrubbing de video no es fiable (iOS Safari no decodifica lo
+ *   bastante rápido al hacer seek continuo), así que el video se reproduce
+ *   en loop. La reproducción normal sí va acelerada por hardware y es fluida.
+ *
+ * El maquetado es idéntico en ambos modos, así que cambiar de uno a otro
+ * (al rotar el teléfono o redimensionar) no altera la altura de la página.
  */
 export default function Scrollytelling() {
   const sectionRef = useRef<HTMLElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const phraseRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const [degraded, setDegraded] = useState(false);
+  const reduce = useReducedMotion();
+  const [scrub, setScrub] = useState(false);
 
+  // Se reevalúa al rotar o redimensionar, no solo al cargar.
   useEffect(() => {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const isMobile = window.innerWidth < 768;
+    const wide = window.matchMedia("(min-width: 768px)");
+    const still = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setScrub(wide.matches && !still.matches);
 
-    if (reduce || isMobile) {
-      setDegraded(true);
-      return;
-    }
-
-    let ctx: gsap.Context | undefined;
-    let cancelled = false;
-
-    Promise.all([import("gsap"), import("gsap/ScrollTrigger")]).then(
-      ([{ gsap }, { ScrollTrigger }]) => {
-        if (cancelled) return;
-        gsap.registerPlugin(ScrollTrigger);
-
-        const section = sectionRef.current;
-        const video = videoRef.current;
-        if (!section || !video) return;
-
-        ctx = gsap.context(() => {
-          // Scrub del video sincronizado con el scroll del pin.
-          const setupScrub = () => {
-            const duration = video.duration;
-            if (!duration || Number.isNaN(duration)) return;
-            gsap.to(video, {
-              currentTime: duration,
-              ease: "none",
-              scrollTrigger: {
-                trigger: section,
-                start: "top top",
-                end: "+=300%",
-                scrub: 1.2,
-                pin: true,
-              },
-            });
-          };
-
-          if (video.readyState >= 1) setupScrub();
-          else video.addEventListener("loadedmetadata", setupScrub, { once: true });
-
-          // Frases sincronizadas: cada una entra y sale en su tramo del scroll.
-          const n = SCROLLY.frases.length;
-          phraseRefs.current.forEach((el, i) => {
-            if (!el) return;
-            const segment = 300 / n; // % de scroll por frase
-            gsap.fromTo(
-              el,
-              { opacity: 0, y: 60 },
-              {
-                opacity: 1,
-                y: 0,
-                ease: "power2.out",
-                scrollTrigger: {
-                  trigger: section,
-                  start: `top+=${i * segment}% top`,
-                  end: `top+=${i * segment + segment * 0.4}% top`,
-                  scrub: true,
-                },
-              }
-            );
-            if (i < n - 1) {
-              gsap.to(el, {
-                opacity: 0,
-                y: -60,
-                ease: "power2.in",
-                scrollTrigger: {
-                  trigger: section,
-                  start: `top+=${(i + 0.6) * segment}% top`,
-                  end: `top+=${(i + 1) * segment}% top`,
-                  scrub: true,
-                },
-              });
-            }
-          });
-
-          // Línea dorada que se dibuja con el scroll.
-          gsap.fromTo(
-            ".scrolly-line",
-            { scaleX: 0 },
-            {
-              scaleX: 1,
-              ease: "none",
-              scrollTrigger: {
-                trigger: section,
-                start: "top top",
-                end: "+=300%",
-                scrub: true,
-              },
-            }
-          );
-        }, section);
-      }
-    );
-
+    update();
+    wide.addEventListener("change", update);
+    still.addEventListener("change", update);
     return () => {
-      cancelled = true;
-      ctx?.revert();
+      wide.removeEventListener("change", update);
+      still.removeEventListener("change", update);
     };
   }, []);
 
-  // --- Fallback simple (mobile / reduced motion) ---
-  if (degraded) {
-    return (
-      <section className="relative py-24 overflow-hidden" aria-label="El viaje del trader">
-        <div
-          className="absolute inset-0 bg-cover bg-center opacity-30"
-          style={{ backgroundImage: "url(/media/scrolly-poster.jpg)" }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-ink via-ink/70 to-ink" />
-        <div className="relative z-10 mx-auto max-w-3xl px-5 flex flex-col gap-20 text-center">
-          {SCROLLY.frases.map((frase) => (
-            <div key={frase.text}>
-              <p className="font-display font-extrabold uppercase text-3xl text-gold-gradient">
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end end"],
+  });
+
+  // Desktop: el progreso del scroll manda sobre el cuadro del video.
+  useMotionValueEvent(scrollYProgress, "change", (progress) => {
+    const video = videoRef.current;
+    if (!scrub || !video?.duration) return;
+    video.currentTime = Math.min(video.duration - 0.05, video.duration * progress);
+  });
+
+  // Mobile: reproducción en loop. Desktop: pausado, lo controla el scroll.
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (scrub || reduce) {
+      video.pause();
+    } else {
+      video.play().catch(() => {
+        // Si el navegador bloquea el autoplay queda el poster: no rompe nada.
+      });
+    }
+  }, [scrub, reduce]);
+
+  return (
+    <section ref={sectionRef} className="relative" aria-label="El viaje del trader">
+      {/* Fondo fijo */}
+      <div className="sticky top-0 h-svh w-full overflow-hidden">
+        <video
+          ref={videoRef}
+          className="absolute inset-0 h-full w-full object-cover"
+          muted
+          playsInline
+          loop={!scrub}
+          preload="metadata"
+          poster="/media/scrolly-poster.jpg"
+          aria-hidden="true"
+        >
+          <source src="/media/scrolly-video.mp4" type="video/mp4" />
+        </video>
+
+        <div className="absolute inset-0 bg-ink/60" />
+        <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-ink to-transparent" />
+
+        <p className="absolute bottom-8 inset-x-0 text-center text-[0.65rem] md:text-xs uppercase tracking-[0.35em] text-gold/50 px-5">
+          {BRAND.slogan2}
+        </p>
+      </div>
+
+      {/* Las frases pasan por encima del fondo fijo */}
+      <div className="relative -mt-[100svh]">
+        {SCROLLY.frases.map((frase) => (
+          <div
+            key={frase.text}
+            className="h-svh flex items-center justify-center px-6"
+          >
+            <motion.div
+              initial={reduce ? { opacity: 1 } : { opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ margin: "-35% 0px -35% 0px" }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              className="text-center"
+            >
+              <p className="font-display font-black uppercase text-3xl sm:text-5xl md:text-6xl text-gold-gradient tracking-tight leading-[1.05]">
                 {frase.text}
               </p>
               {frase.sub && (
-                <p className="mt-3 font-serif italic text-xl text-foreground/70">{frase.sub}</p>
+                <p className="mt-4 font-serif italic text-xl md:text-3xl text-foreground/80">
+                  {frase.sub}
+                </p>
               )}
-            </div>
-          ))}
-        </div>
-      </section>
-    );
-  }
-
-  // --- Versión completa con pin + scrub ---
-  return (
-    <section
-      ref={sectionRef}
-      className="relative h-svh overflow-hidden"
-      aria-label="El viaje del trader"
-    >
-      <video
-        ref={videoRef}
-        className="absolute inset-0 h-full w-full object-cover"
-        muted
-        playsInline
-        preload="auto"
-        poster="/media/scrolly-poster.jpg"
-        aria-hidden="true"
-      >
-        <source src="/media/scrolly-video.mp4" type="video/mp4" />
-      </video>
-      <div className="absolute inset-0 bg-ink/55" />
-
-      {/* Frases sincronizadas */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        {SCROLLY.frases.map((frase, i) => (
-          <div
-            key={frase.text}
-            ref={(el) => {
-              phraseRefs.current[i] = el;
-            }}
-            className="absolute px-5 text-center opacity-0"
-          >
-            <p className="font-display font-black uppercase text-4xl md:text-6xl text-gold-gradient tracking-tight">
-              {frase.text}
-            </p>
-            {frase.sub && (
-              <p className="mt-4 font-serif italic text-2xl md:text-3xl text-foreground/80">
-                {frase.sub}
-              </p>
-            )}
+            </motion.div>
           </div>
         ))}
       </div>
-
-      {/* Línea dorada que se dibuja */}
-      <div className="absolute bottom-16 left-1/2 -translate-x-1/2 w-2/3 max-w-xl">
-        <div className="scrolly-line divider-gold origin-left" />
-      </div>
-
-      <p className="absolute bottom-8 inset-x-0 text-center text-xs uppercase tracking-[0.35em] text-gold/50">
-        {BRAND.slogan2}
-      </p>
     </section>
   );
 }

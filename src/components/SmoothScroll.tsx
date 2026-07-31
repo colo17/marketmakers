@@ -3,7 +3,7 @@
 import { useEffect } from "react";
 import Lenis from "lenis";
 
-/** Smooth scroll global con Lenis + sincronización con GSAP ScrollTrigger. */
+/** Smooth scroll global con Lenis. */
 export default function SmoothScroll() {
   useEffect(() => {
     // Respetar prefers-reduced-motion: sin smooth scroll.
@@ -15,14 +15,6 @@ export default function SmoothScroll() {
     });
 
     let rafId: number;
-    let scrollTriggerUpdate: (() => void) | null = null;
-
-    // Sincronizar con ScrollTrigger si está cargado (lo carga el scrollytelling).
-    import("gsap/ScrollTrigger").then(({ ScrollTrigger }) => {
-      scrollTriggerUpdate = () => ScrollTrigger.update();
-      lenis.on("scroll", scrollTriggerUpdate);
-    });
-
     const raf = (time: number) => {
       lenis.raf(time);
       rafId = requestAnimationFrame(raf);
