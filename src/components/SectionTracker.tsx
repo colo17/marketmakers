@@ -27,8 +27,13 @@ export default function SectionTracker() {
           observer.unobserve(entry.target);
         }
       },
-      // Se cuenta como vista cuando entra un tercio de la sección.
-      { threshold: 0.33 }
+      /*
+       * Se cuenta como vista cuando la sección cruza la banda central de la
+       * pantalla. NO se usa `threshold` por porcentaje: ese valor mide qué
+       * proporción DE LA SECCIÓN se ve, así que una sección más alta que el
+       * viewport nunca lo alcanzaría (y varias de la home lo son).
+       */
+      { threshold: 0, rootMargin: "-35% 0px -35% 0px" }
     );
 
     sections.forEach((section) => observer.observe(section));
