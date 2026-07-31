@@ -101,7 +101,18 @@ El script está en [`scripts/extract-html.mjs`](scripts/extract-html.mjs) — ah
 
 El sitio carga GTM desde el layout, y desde ahí se alimenta Google Analytics 4.
 
-**Configuración:** el ID del contenedor va en la variable `NEXT_PUBLIC_GTM_ID` (ver [`.env.example`](.env.example)). En local se pone en `.env.local`; en producción, en Vercel → *Settings* → *Environment Variables*. Si la variable está vacía, el sitio funciona normal pero sin medición.
+| Cuenta | ID |
+| --- | --- |
+| Contenedor de Tag Manager | `GTM-MW66SV6C` |
+| Propiedad GA4 (marketmakers.club) | `G-BGP5GMLKYG` |
+
+**Configuración:** el ID del contenedor va en la variable `NEXT_PUBLIC_GTM_ID` (ver [`.env.example`](.env.example)). En local se pone en `.env.local`; en producción ya está cargada en Vercel → *Settings* → *Environment Variables*. Si la variable está vacía, el sitio funciona normal pero sin medición.
+
+### Cómo está armado GTM
+
+- **`GA4 - Etiqueta de Google`** → carga GA4 en todas las páginas.
+- **`GA4 - Eventos Market Makers`** → una sola etiqueta que cubre *todos* los eventos: el nombre del evento es la variable `{{Event}}` y el activador es un evento personalizado con la expresión regular `^mm_`.
+- **6 variables de capa de datos** (`dlv - cta_location`, `guide`, `percent`, `section`, `heading`, `question`) mapeadas como parámetros del evento.
 
 ### Eventos que se envían
 
