@@ -30,7 +30,9 @@ export default function HowItWorks() {
         </div>
 
         <Reveal delay={0.3} className="mt-14 flex justify-center">
-          <CtaButton size="lg">{COMO_FUNCIONA.cta}</CtaButton>
+          <CtaButton size="lg" location="como_funciona">
+            {COMO_FUNCIONA.cta}
+          </CtaButton>
         </Reveal>
       </div>
     </section>

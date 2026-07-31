@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import { Montserrat, Inter, Cormorant_Garamond } from "next/font/google";
+import { GoogleTagManager } from "@next/third-parties/google";
 import "./globals.css";
 import { BRAND, SEO } from "@/data/content";
+
+// Sin ID configurado el sitio funciona igual, solo que sin medición.
+const GTM_ID = process.env.NEXT_PUBLIC_GTM_ID;
 
 // next/font self-hostea las fuentes en build: el navegador nunca llama al CDN de Google.
 const montserrat = Montserrat({
@@ -71,6 +75,8 @@ export default function RootLayout({
       lang="es"
       className={`${montserrat.variable} ${inter.variable} ${cormorant.variable} h-full antialiased`}
     >
+      {/* Google Tag Manager. El ID se configura en .env.local (ver README). */}
+      {GTM_ID && <GoogleTagManager gtmId={GTM_ID} />}
       <body className="min-h-full flex flex-col bg-background text-foreground">
         {children}
       </body>

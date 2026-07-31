@@ -97,6 +97,39 @@ node scripts/extract-html.mjs
 
 El script está en [`scripts/extract-html.mjs`](scripts/extract-html.mjs) — ahí se configuran las rutas de origen y los slugs. No necesita dependencias.
 
+## 📊 Medición (Google Tag Manager + GA4)
+
+El sitio carga GTM desde el layout, y desde ahí se alimenta Google Analytics 4.
+
+**Configuración:** el ID del contenedor va en la variable `NEXT_PUBLIC_GTM_ID` (ver [`.env.example`](.env.example)). En local se pone en `.env.local`; en producción, en Vercel → *Settings* → *Environment Variables*. Si la variable está vacía, el sitio funciona normal pero sin medición.
+
+### Eventos que se envían
+
+Todos van prefijados con `mm_` y se definen en [`src/lib/analytics.ts`](src/lib/analytics.ts):
+
+| Evento | Cuándo | Parámetros |
+| --- | --- | --- |
+| `mm_discord_click` | Clic en cualquier CTA al Discord | `cta_location`, a veces `guide` |
+| `mm_kick_click` | Clic hacia el stream | `cta_location` |
+| `mm_instagram_click` | Clic hacia Instagram | `cta_location` |
+| `mm_guide_open` | Se abre una guía desde una card | `guide`, `cta_location` |
+| `mm_guide_progress` | Se lee el 25/50/75/100 % de una guía | `guide`, `percent` |
+| `mm_toc_click` | Clic en el índice de una guía | `guide`, `heading` |
+| `mm_faq_open` | Se despliega una pregunta | `question` |
+| `mm_section_view` | Una sección de la home entra en pantalla | `section` |
+
+El parámetro `cta_location` es la clave del asunto: permite comparar **qué CTA convierte mejor** (hero vs. precios vs. final de guía) en vez de ver un total indistinto.
+
+### Cómo agregar un evento nuevo
+
+En GTM hay **una sola** etiqueta de evento GA4, con un activador que matchea `^mm_`. Eso significa que alcanza con agregar la función en `analytics.ts` y llamarla: el evento llega a GA4 **sin tocar GTM**.
+
+```ts
+export function trackAlgoNuevo(valor: string) {
+  track("mm_algo_nuevo", { valor });
+}
+```
+
 ## 🌐 Despliegue y dominio
 
 El sitio está en Vercel: cada `git push` redeploya automáticamente.

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { FAQ } from "@/data/content";
+import { trackFaqOpen } from "@/lib/analytics";
 import SectionHeading from "../ui/SectionHeading";
 import Reveal from "../ui/Reveal";
 
@@ -22,7 +23,10 @@ export default function Faq() {
               <Reveal key={item.pregunta} delay={i * 0.07}>
                 <div className="card-gold rounded-xl overflow-hidden">
                   <button
-                    onClick={() => setOpenIndex(isOpen ? null : i)}
+                    onClick={() => {
+                      if (!isOpen) trackFaqOpen(item.pregunta);
+                      setOpenIndex(isOpen ? null : i);
+                    }}
                     aria-expanded={isOpen}
                     className="w-full flex items-center justify-between gap-4 px-6 py-5 text-left"
                   >

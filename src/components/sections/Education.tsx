@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { EDUCACION, LINKS } from "@/data/content";
+import { trackGuideOpen, trackDiscordClick } from "@/lib/analytics";
 import SectionHeading from "../ui/SectionHeading";
 import Reveal from "../ui/Reveal";
 
@@ -51,12 +52,14 @@ export default function Education() {
                   </p>
                   <Link
                     href={`/guias/${ebook.slug}`}
+                    onClick={() => trackGuideOpen(ebook.slug, "educacion_card")}
                     className="btn-gold rounded-full px-5 py-2.5 text-center text-sm font-display font-bold uppercase tracking-wide mt-2"
                   >
                     {EDUCACION.ctaLeer}
                   </Link>
                   <a
                     href={LINKS.discord}
+                    onClick={() => trackDiscordClick("educacion_card", { guide: ebook.slug })}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-center text-xs text-foreground/50 hover:text-gold transition-colors"

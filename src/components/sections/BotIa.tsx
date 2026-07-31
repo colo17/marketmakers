@@ -37,7 +37,9 @@ export default function BotIa() {
               </li>
             ))}
           </ul>
-          <CtaButton className="self-start mt-2">{BOT_IA.cta}</CtaButton>
+          <CtaButton className="self-start mt-2" location="bot_ia">
+            {BOT_IA.cta}
+          </CtaButton>
         </Reveal>
       </div>
     </section>

@@ -18,7 +18,9 @@ export default function DiscordCta({ variant = "top" }: { variant?: "top" | "bot
           <strong className="text-foreground/90">señales XAU/USD en tiempo real</strong>, análisis
           diario del oro y el resto de la colección de guías.
         </p>
-        <CtaButton className="mt-5">Entrar al Discord gratis</CtaButton>
+        <CtaButton className="mt-5" location="guia_top">
+          Entrar al Discord gratis
+        </CtaButton>
       </aside>
     );
   }
@@ -39,8 +41,10 @@ export default function DiscordCta({ variant = "top" }: { variant?: "top" | "bot
           entrada, stop loss y take profit. Análisis diario y streams en vivo todos los días.
         </p>
         <div className="mt-7 flex flex-col sm:flex-row gap-4 justify-center">
-          <CtaButton size="lg">Descargar el PDF en Discord</CtaButton>
-          <CtaButton href={LINKS.kick} variant="outline" size="lg">
+          <CtaButton size="lg" location="guia_bottom">
+            Descargar el PDF en Discord
+          </CtaButton>
+          <CtaButton href={LINKS.kick} variant="outline" size="lg" location="guia_bottom">
             {STREAMS.cta}
           </CtaButton>
         </div>

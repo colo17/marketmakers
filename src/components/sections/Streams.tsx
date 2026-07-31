@@ -1,4 +1,7 @@
+"use client";
+
 import { STREAMS, LINKS } from "@/data/content";
+import { trackKickClick } from "@/lib/analytics";
 import SectionHeading from "../ui/SectionHeading";
 import Reveal from "../ui/Reveal";
 
@@ -49,6 +52,7 @@ export default function Streams() {
               <div className="flex flex-col items-center gap-3">
                 <a
                   href={LINKS.kick}
+                  onClick={() => trackKickClick("streams")}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-3 rounded-full bg-[#53fc18] px-8 py-4 font-display font-bold uppercase tracking-wide text-black transition-transform hover:-translate-y-0.5 hover:shadow-[0_8px_30px_rgba(83,252,24,0.35)]"

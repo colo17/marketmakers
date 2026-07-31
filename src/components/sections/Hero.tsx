@@ -77,7 +77,9 @@ export default function Hero() {
           {...fadeUp(0.7)}
           className="flex flex-col sm:flex-row items-center gap-4 mt-2"
         >
-          <CtaButton size="lg">{HERO.ctaPrimary}</CtaButton>
+          <CtaButton size="lg" location="hero">
+            {HERO.ctaPrimary}
+          </CtaButton>
           <CtaButton href="#como-funciona" variant="outline" size="lg">
             {HERO.ctaSecondary}
           </CtaButton>

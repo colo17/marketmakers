@@ -1,4 +1,7 @@
+"use client";
+
 import { LINKS, STREAMS, GUIA_STREAM_CTA } from "@/data/content";
+import { trackKickClick } from "@/lib/analytics";
 
 /**
  * Bloque de streams dentro de las guías: la teoría que se acaba de leer,
@@ -44,6 +47,7 @@ export default function StreamCta() {
 
         <a
           href={LINKS.kick}
+          onClick={() => trackKickClick("guia_stream")}
           target="_blank"
           rel="noopener noreferrer"
           className="shrink-0 inline-flex items-center gap-3 rounded-full bg-[#53fc18] px-7 py-3.5 font-display font-bold uppercase tracking-wide text-black text-sm transition-transform hover:-translate-y-0.5 hover:shadow-[0_8px_30px_rgba(83,252,24,0.35)]"

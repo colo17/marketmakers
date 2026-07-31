@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import SmoothScroll from "@/components/SmoothScroll";
+import SectionTracker from "@/components/SectionTracker";
 import Hero from "@/components/sections/Hero";
 import Pillars from "@/components/sections/Pillars";
 import HowItWorks from "@/components/sections/HowItWorks";
@@ -19,6 +20,7 @@ export default function Home() {
     <>
       <JsonLd />
       <SmoothScroll />
+      <SectionTracker />
       <Navbar />
       <main className="flex-1">
         <Hero />

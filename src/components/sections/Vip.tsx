@@ -75,7 +75,11 @@ export default function Vip() {
                     </li>
                   ))}
                 </ul>
-                <CtaButton variant={plan.destacado ? "gold" : "outline"} className="w-full">
+                <CtaButton
+                  variant={plan.destacado ? "gold" : "outline"}
+                  className="w-full"
+                  location={plan.destacado ? "vip_pago" : "vip_gratis"}
+                >
                   {plan.cta}
                 </CtaButton>
               </article>

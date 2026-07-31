@@ -8,6 +8,8 @@ import SmoothScroll from "@/components/SmoothScroll";
 import EbookContent from "@/components/guias/EbookContent";
 import DiscordCta from "@/components/guias/DiscordCta";
 import StreamCta from "@/components/guias/StreamCta";
+import GuideToc from "@/components/guias/GuideToc";
+import GuideTracker from "@/components/guias/GuideTracker";
 import { BRAND, DISCLAIMER } from "@/data/content";
 import { GUIDES_META, getGuideMeta, getEbook, readingMinutes } from "@/data/guides";
 
@@ -121,6 +123,7 @@ export default async function GuidePage({ params }: Props) {
         />
       ))}
       <SmoothScroll />
+      <GuideTracker slug={meta.slug} />
       <Navbar />
 
       <main className="flex-1 pt-28 pb-24">
@@ -164,31 +167,7 @@ export default async function GuidePage({ params }: Props) {
             <DiscordCta variant="top" />
           </div>
 
-          {toc.length >= 3 && (
-            <nav
-              aria-label="Contenido de la guía"
-              className="card-gold rounded-2xl p-6 md:p-8 mb-14"
-            >
-              <h2 className="font-display font-bold uppercase tracking-widest text-xs text-gold mb-5">
-                Contenido de esta guía
-              </h2>
-              <ol className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2.5">
-                {toc.map((page, i) => (
-                  <li key={page.id} className="flex gap-3 text-sm">
-                    <span className="font-display font-bold text-gold/50 tabular-nums shrink-0">
-                      {String(i + 1).padStart(2, "0")}
-                    </span>
-                    <a
-                      href={`#${page.id}`}
-                      className="text-foreground/70 hover:text-gold transition-colors"
-                    >
-                      {page.title}
-                    </a>
-                  </li>
-                ))}
-              </ol>
-            </nav>
-          )}
+          <GuideToc slug={meta.slug} pages={toc} />
 
           <EbookContent css={ebook.css} pages={firstHalf} />
 

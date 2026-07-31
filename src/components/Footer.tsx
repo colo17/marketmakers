@@ -1,4 +1,7 @@
+"use client";
+
 import { BRAND, LINKS, DISCLAIMER } from "@/data/content";
+import { trackDiscordClick, trackKickClick, trackInstagramClick } from "@/lib/analytics";
 import LogoM from "./LogoM";
 
 export default function Footer() {
@@ -19,6 +22,7 @@ export default function Footer() {
             <li>
               <a
                 href={LINKS.discord}
+                onClick={() => trackDiscordClick("footer")}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-foreground/60 hover:text-gold transition-colors flex items-center gap-2 text-sm"
@@ -32,6 +36,7 @@ export default function Footer() {
             <li>
               <a
                 href={LINKS.kick}
+                onClick={() => trackKickClick("footer")}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-foreground/60 hover:text-gold transition-colors flex items-center gap-2 text-sm"
@@ -45,6 +50,7 @@ export default function Footer() {
             <li>
               <a
                 href={LINKS.instagram}
+                onClick={() => trackInstagramClick("footer")}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-foreground/60 hover:text-gold transition-colors flex items-center gap-2 text-sm"

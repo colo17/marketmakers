@@ -56,7 +56,7 @@ export default function Navbar() {
         </ul>
 
         <div className="flex items-center gap-3">
-          <CtaButton className="hidden md:inline-flex" size="md">
+          <CtaButton className="hidden md:inline-flex" size="md" location="navbar">
             Unite al Discord
           </CtaButton>
           <button
@@ -91,7 +91,9 @@ export default function Navbar() {
               </li>
             ))}
             <li className="pt-2">
-              <CtaButton className="w-full">Unite al Discord</CtaButton>
+              <CtaButton className="w-full" location="navbar">
+                Unite al Discord
+              </CtaButton>
             </li>
           </ul>
         </div>

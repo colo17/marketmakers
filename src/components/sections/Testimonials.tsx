@@ -35,7 +35,9 @@ export default function Testimonials() {
         </div>
 
         <Reveal delay={0.3} className="mt-14 flex justify-center">
-          <CtaButton size="lg">{TESTIMONIOS.cta}</CtaButton>
+          <CtaButton size="lg" location="testimonios">
+            {TESTIMONIOS.cta}
+          </CtaButton>
         </Reveal>
       </div>
     </section>

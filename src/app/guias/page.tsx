@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import SmoothScroll from "@/components/SmoothScroll";
 import Reveal from "@/components/ui/Reveal";
 import CtaButton from "@/components/ui/CtaButton";
+import GuideCardLink from "@/components/guias/GuideCardLink";
 import { BRAND } from "@/data/content";
 import { GUIDES_META, getEbook, readingMinutes } from "@/data/guides";
 
@@ -59,14 +59,16 @@ export default function GuiasPage() {
               oro y cómo cotiza, hasta estrategias, patrones chartistas, noticias, gestión del
               riesgo, psicología y cómo llegar a operar una cuenta de fondeo.
             </p>
-            <CtaButton size="lg">Descargá los PDF en Discord</CtaButton>
+            <CtaButton size="lg" location="guias_hub">
+              Descargá los PDF en Discord
+            </CtaButton>
           </Reveal>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {guides.map((guide, i) => (
               <Reveal key={guide.slug} delay={i * 0.1}>
                 <article className="card-gold rounded-2xl overflow-hidden h-full flex flex-col group">
-                  <Link href={`/guias/${guide.slug}`} className="flex flex-col h-full">
+                  <GuideCardLink slug={guide.slug}>
                     <div className="relative aspect-[16/10] overflow-hidden">
                       <Image
                         src={guide.cover}
@@ -105,7 +107,7 @@ export default function GuiasPage() {
                         </svg>
                       </span>
                     </div>
-                  </Link>
+                  </GuideCardLink>
                 </article>
               </Reveal>
             ))}
