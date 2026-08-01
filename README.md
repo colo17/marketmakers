@@ -141,6 +141,17 @@ export function trackAlgoNuevo(valor: string) {
 }
 ```
 
+### ⚠️ Pendiente: registrar las dimensiones personalizadas en los informes
+
+Los 6 parámetros (`cta_location`, `guide`, `percent`, `section`, `heading`, `question`) ya **llegan** a GA4 y se pueden ver evento por evento en *Informes → Tiempo real*. Pero para que aparezcan como **columnas/filtros en los informes normales**, hay que registrarlos como dimensiones personalizadas — un paso manual que no se pudo terminar en la config inicial porque el catálogo de parámetros de GA4 tarda unas horas en poblarse después del primer evento (es un pipeline distinto y más lento que el de "Eventos recientes").
+
+Cuando quieras completarlo (alcanza con que el sitio lleve un día recibiendo tráfico real):
+
+1. Analytics → Administrar → **Definiciones personalizadas** → *Crear dimensión personalizada*
+2. Repetir para cada uno de los 6 parámetros: nombre = el parámetro (ej. `cta_location`), Ámbito = *Evento*, Parámetro de evento = seleccionarlo de la lista (ya debería aparecer)
+
+**Evento clave:** `mm_discord_click` ya está marcado como evento clave (conversión) en GA4 → Administrar → Eventos. `mm_guide_open` todavía no había recibido tráfico suficiente para aparecer en el catálogo — marcarlo con el mismo mecanismo (la estrella junto al nombre del evento) cuando aparezca.
+
 ## 🌐 Despliegue y dominio
 
 El sitio está en Vercel: cada `git push` redeploya automáticamente.
